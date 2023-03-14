@@ -14,9 +14,9 @@ const coala = axios.create({
     },
 });
 
-app.route('/*')
+app.route('/coala/*')
     .get((req, res) => {
-        let endpoint = req.originalUrl;
+        let endpoint = req.originalUrl.replace('/coala/', '');
         if (endpoint[0] === '/') endpoint = endpoint.slice(1)
 
         console.log('GET Request:', endpoint);
