@@ -16,8 +16,7 @@ const coala = axios.create({
 
 app.route('/coala/*')
     .get((req, res) => {
-        let endpoint = req.originalUrl.replace('/coala/', '');
-        if (endpoint[0] === '/') endpoint = endpoint.slice(1)
+        const endpoint = req.originalUrl.replace('/coala/', '');
 
         console.log('GET Request:', endpoint);
         coala.get(endpoint)
@@ -30,9 +29,7 @@ app.route('/coala/*')
             });
     })
     .post((req, res) => {
-        let endpoint = req.originalUrl;
-        if (endpoint[0] === '/') endpoint = endpoint.slice(1)
-
+        const endpoint = req.originalUrl.replace('/coala/', '');
         const payload = req.body;
 
         console.log('POST Request:', endpoint, payload);
