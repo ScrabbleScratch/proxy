@@ -24,10 +24,9 @@ app.route('/coala/*')
                 console.log('GET Response:', response.data);
                 res.json(response.data);
             })
-            .catch(err => {
-                // console.log('Error:', err);
+            .catch(error => {
                 console.log('Error on GET request:', endpoint);
-                res.send(err);
+                res.sendStatus(error.response.status);
             });
     })
     .post((req, res) => {
@@ -41,9 +40,8 @@ app.route('/coala/*')
                 res.send(response.data);
             })
             .catch(err => {
-                // console.log('Error:', err);
                 console.log('Error on POST request:', endpoint, payload);
-                res.send(err);
+                res.sendStatus(error.response.status);
             });
     });
 
