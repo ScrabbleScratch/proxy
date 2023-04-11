@@ -1,10 +1,10 @@
-const express = require('express');
-const cors = require('cors');
-const axios = require('axios').default;
+import express, { json } from 'express';
+import cors from 'cors';
+import axios from 'axios';
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(json());
 
 const coala = axios.create({
     headers: {
@@ -16,12 +16,14 @@ const coala = axios.create({
 
 app.route('/coala/*')
     .get((req, res) => {
+        const reqId = Date.now();
+  
         const endpoint = req.originalUrl.replace('/coala/', '');
 
-        console.log('GET Request:', endpoint);
+        console.log(`(${reqId}) GET Request:`, endpoint);
         coala.get(endpoint)
             .then(response => {
-                console.log('GET Response:', response.data);
+                console.log(`(${reqId}) GET Response:`, response.data);
                 res.json(response.data);
             })
             .catch(error => {
@@ -30,13 +32,15 @@ app.route('/coala/*')
             });
     })
     .post((req, res) => {
+        const reqId = Date.now();
+  
         const endpoint = req.originalUrl.replace('/coala/', '');
         const payload = req.body;
 
-        console.log('POST Request:', endpoint, payload);
+        console.log(`(${reqId}) POST Request:`, endpoint, payload);
         coala.post(endpoint, payload)
             .then(response => {
-                console.log('POST Response:', response.data);
+                console.log(`(${reqId}) POST Response:`, response.data);
                 res.send(response.data);
             })
             .catch(err => {
@@ -54,4 +58,4 @@ if (port == null || port == "") {
 }
 app.listen(port, () => console.log('Server running on port:', port));
 
-module.exports = app;
+export default app;
