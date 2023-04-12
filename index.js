@@ -43,7 +43,7 @@ app.route('/coala/*')
                 console.log(`(${reqId}) POST Response:`, response.data);
                 res.send(response.data);
             })
-            .catch(err => {
+            .catch(error => {
                 console.log('Error on POST request:', endpoint, payload);
                 res.sendStatus(error.response.status);
             });
