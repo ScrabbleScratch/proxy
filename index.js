@@ -49,6 +49,41 @@ app.route('/coala/*')
             });
     });
 
+app.route('/medichat/*')
+    .get((req, res) => {
+        const reqId = Date.now();
+  
+        const endpoint = req.originalUrl.replace('/medichat/', '');
+
+        console.log(`➡ (${reqId}) GET Request:`, endpoint);
+        coala.get(endpoint)
+            .then(response => {
+                console.log(`⬅ (${reqId}) GET Response:`, response.data);
+                res.json(response.data);
+            })
+            .catch(error => {
+                console.log(`⬅ (${reqId}) Error on GET request:`, endpoint);
+                res.sendStatus(error.response.status);
+            });
+    })
+    .post((req, res) => {
+        const reqId = Date.now();
+  
+        const endpoint = req.originalUrl.replace('/medichat/', '');
+        const payload = req.body;
+
+        console.log(`➡ (${reqId}) POST Request:`, endpoint, payload);
+        coala.post(endpoint, payload)
+            .then(response => {
+                console.log(`⬅ (${reqId}) POST Response:`, response.data);
+                res.send(response.data);
+            })
+            .catch(error => {
+                console.log(`⬅ (${reqId}) Error on POST request:`, endpoint, payload);
+                res.sendStatus(error.response.status);
+            });
+    });
+
 app.route('/ping')
     .get((req, res) => res.send('Hello world'));
 
