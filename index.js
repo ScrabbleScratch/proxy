@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const coala = axios.create({
+const api = axios.create({
     headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
@@ -14,72 +14,39 @@ const coala = axios.create({
     },
 });
 
-app.route('/coala/*')
+app.route('/:client/*')
     .get((req, res) => {
         const reqId = Date.now();
   
-        const endpoint = req.originalUrl.replace('/coala/', '');
+        const client = req.params.client;
+        const endpoint = req.params[0];
 
-        console.log(`➡ (${reqId}) GET Request:`, endpoint);
-        coala.get(endpoint)
+        console.log(`➡ (${reqId}) GET Request <${client}>:`, endpoint);
+        api.get(endpoint)
             .then(response => {
-                console.log(`⬅ (${reqId}) GET Response:`, response.data);
+                console.log(`⬅ (${reqId}) GET Response <${client}>:`, response.data);
                 res.json(response.data);
             })
             .catch(error => {
-                console.log(`⬅ (${reqId}) Error on GET request:`, endpoint);
+                console.log(`⬅ (${reqId}) Error on GET request <${client}>:`, endpoint);
                 res.sendStatus(error.response.status);
             });
     })
     .post((req, res) => {
         const reqId = Date.now();
   
-        const endpoint = req.originalUrl.replace('/coala/', '');
+        const client = req.params.client;
+        const endpoint = req.params[0];
         const payload = req.body;
 
-        console.log(`➡ (${reqId}) POST Request:`, endpoint, payload);
-        coala.post(endpoint, payload)
+        console.log(`➡ (${reqId}) POST Request <${client}>:`, endpoint, payload);
+        api.post(endpoint, payload)
             .then(response => {
-                console.log(`⬅ (${reqId}) POST Response:`, response.data);
+                console.log(`⬅ (${reqId}) POST Response <${client}>:`, response.data);
                 res.send(response.data);
             })
             .catch(error => {
-                console.log(`⬅ (${reqId}) Error on POST request:`, endpoint, payload);
-                res.sendStatus(error.response.status);
-            });
-    });
-
-app.route('/medichat/*')
-    .get((req, res) => {
-        const reqId = Date.now();
-  
-        const endpoint = req.originalUrl.replace('/medichat/', '');
-
-        console.log(`➡ (${reqId}) GET Request:`, endpoint);
-        coala.get(endpoint)
-            .then(response => {
-                console.log(`⬅ (${reqId}) GET Response:`, response.data);
-                res.json(response.data);
-            })
-            .catch(error => {
-                console.log(`⬅ (${reqId}) Error on GET request:`, endpoint);
-                res.sendStatus(error.response.status);
-            });
-    })
-    .post((req, res) => {
-        const reqId = Date.now();
-  
-        const endpoint = req.originalUrl.replace('/medichat/', '');
-        const payload = req.body;
-
-        console.log(`➡ (${reqId}) POST Request:`, endpoint, payload);
-        coala.post(endpoint, payload)
-            .then(response => {
-                console.log(`⬅ (${reqId}) POST Response:`, response.data);
-                res.send(response.data);
-            })
-            .catch(error => {
-                console.log(`⬅ (${reqId}) Error on POST request:`, endpoint, payload);
+                console.log(`⬅ (${reqId}) Error on POST request <${client}>:`, endpoint, payload);
                 res.sendStatus(error.response.status);
             });
     });
